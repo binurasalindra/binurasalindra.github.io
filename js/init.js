@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2022 Marketify
- * Author: Marketify
+ * Copyright (c) 2022 Binura Salindra
+ * Author: Binura Salindra
  * This file is made for CURRENT TEMPLATE
 */
 
