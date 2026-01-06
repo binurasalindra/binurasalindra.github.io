@@ -812,6 +812,9 @@ a{
     top: 50%;
     transform: translateY(-50%);
 }
+.tokyo_tm_skill_list ul li strong{
+	color: #fff;
+}
 .tokyo_tm_resumebox{
 	width: 100%;
 	height: auto;
