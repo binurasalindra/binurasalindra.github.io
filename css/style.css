@@ -2228,10 +2228,31 @@ body.modal{
 	font-weight: 500;
 }
 .tokyo_tm_contact .returnmessage{
-	color:#3A00FF;
-	margin-bottom: 7px;
-	text-align: left;
-	font-weight: 500;
+    display: none; /* shown via JS */
+    padding: 14px 18px;
+    margin-bottom: 15px;
+
+    background-color: #ffffff;          /* white background */
+    color: #1f9d55;                     /* green text */
+
+    border: 1px solid #1f9d55;
+    border-left: 5px solid #1f9d55;
+
+    font-weight: 700;                   /* bold text */
+    font-size: 14px;
+    line-height: 1.6;
+
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(31, 157, 85, 0.15);
+
+    animation: successFadeIn 0.4s ease-in-out;
+}
+
+/* sending state */
+.tokyo_tm_contact .returnmessage.sending{
+    color: #555;
+    border-color: #999;
+    border-left-color: #999;
 }
 
 /*---------------------------------------------------*/
