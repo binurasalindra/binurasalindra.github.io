@@ -24,7 +24,8 @@ jQuery(document).ready(function(){
 	tokyo_tm_popup();
 	tokyo_tm_data_images();
 	tokyo_tm_owl_carousel();
-	
+    tokyo_tm_contact_form();
+
 	jQuery(window).load('body', function(){
 		tokyo_tm_my_load();
 	});
@@ -34,7 +35,11 @@ jQuery(document).ready(function(){
 // -----------------------------------------------------
 // ---------------   FUNCTIONS    ----------------------
 // -----------------------------------------------------
-
+(function () {
+    if (typeof emailjs !== "undefined") {
+        emailjs.init("YvKw5a6mHClTIHaRN");
+    }
+})();
 // -----------------------------------------------------
 // --------------------   MODALBOX    ------------------
 // -----------------------------------------------------
@@ -481,4 +486,54 @@ function tokyo_tm_owl_carousel(){
 			}
 		}
 	});
+}
+
+// -----------------------------------------------------
+// ----------------    Contact Form    -----------------
+// -----------------------------------------------------
+function tokyo_tm_contact_form() {
+
+    var form = jQuery("#contact_form");
+    var returnMessage = jQuery(".returnmessage");
+
+    if (!form.length || !returnMessage.length) {
+        return; // safety check
+    }
+
+    form.on("submit", function(e) {
+        e.preventDefault();
+
+        var name = jQuery("#name").val().trim();
+        var email = jQuery("#email").val().trim();
+        var message = jQuery("#message").val().trim();
+
+        if (!name || !email || !message) {
+            jQuery(".empty_notice").fadeIn();
+            return;
+        }
+
+        // Sending state
+        returnMessage
+            .html("⏳ Sending message...")
+            .addClass("sending")
+            .fadeIn();
+
+        emailjs.send("service_a3nycjj", "template_qxpw70p", {
+            name: name,
+            email: email,
+            message: message
+        })
+            .then(function() {
+                returnMessage
+                    .html(returnMessage.data("success"))
+                    .removeClass("sending");
+
+                form[0].reset();
+            })
+            .catch(function() {
+                returnMessage
+                    .html("❌ Failed to send message. Please try again.")
+                    .removeClass("sending");
+            });
+    });
 }

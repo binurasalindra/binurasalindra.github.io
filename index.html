@@ -1053,54 +1053,8 @@
 <script src="js/jquery.js"></script>
 <!--[if lt IE 10]> <script type="text/javascript" src="js/ie8.js"></script> <![endif]-->	
 <script src="js/plugins.js"></script>
-<script src="js/init.js"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-
-    <script>
-        (function () {
-            emailjs.init("YvKw5a6mHClTIHaRN");
-        })();
-    </script>
-
-
-    <script>
-        const form = document.getElementById("contact_form");
-        const returnMessage = document.querySelector(".returnmessage");
-
-        form.addEventListener("submit", function(e) {
-            e.preventDefault();
-
-            const name = document.getElementById("name").value.trim();
-            const email = document.getElementById("email").value.trim();
-            const message = document.getElementById("message").value.trim();
-
-            if (!name || !email || !message) {
-                document.querySelector(".empty_notice").style.display = "block";
-                return;
-            }
-
-            // SHOW SENDING STATE
-            returnMessage.innerHTML = "⏳ Sending message...";
-            returnMessage.classList.add("sending");
-            returnMessage.style.display = "block";
-
-            emailjs.send("service_a3nycjj", "template_qxpw70p", {
-                name,
-                email,
-                message,
-            })
-                .then(() => {
-                    returnMessage.innerHTML = returnMessage.dataset.success;
-                    returnMessage.classList.remove("sending");
-                    form.reset();
-                })
-                .catch(() => {
-                    returnMessage.innerHTML = "❌ Failed to send message. Please try again.";
-                    returnMessage.classList.remove("sending");
-                });
-        });
-    </script>
+<script src="js/init.js"></script>
 <!-- /SCRIPTS -->
 
 </body>

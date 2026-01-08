@@ -149,6 +149,11 @@ body.dark .tokyo_tm_button a{
 	background-color: #fff;
 	color: #000;
 }
+body.dark .tokyo_tm_button button{
+    background-color: #fff;
+    color: #000;
+}
+
 body.dark .tokyo_tm_about .description .right > ul > li a{
 	color: #bbb;
 }
