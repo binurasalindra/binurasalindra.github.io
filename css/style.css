@@ -38,6 +38,40 @@ body{
 	background-color: #fff;
 	color: #767676;
 }
+/* Background canvas (3D particle field) */
+.bg-canvas{
+	pointer-events: none;
+	z-index: 0;
+	display: block;
+}
+.bg-canvas-left{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+.bg-canvas-right{
+	position: fixed;
+	top: 0;
+	right: 0;
+	left: 450px;
+	height: 100vh;
+}
+.tokyo_tm_all_wrap .leftpart_inner,
+.tokyo_tm_all_wrap .rightpart_in{
+	position: relative;
+	z-index: 1;
+}
+.tokyo_tm_all_wrap .rightpart{
+	z-index: 1;
+}
+@media (max-width: 1600px) {
+	.bg-canvas-right{left: 350px;}
+}
+@media (max-width: 1200px) {
+	.bg-canvas-right{left: 0;}
+}
 body::-webkit-scrollbar{
   width: 0px;
 }
