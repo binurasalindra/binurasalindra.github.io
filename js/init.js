@@ -1,539 +1,510 @@
-/*
- * Copyright (c) 2022 Binura Salindra
- * Author: Binura Salindra
- * This file is made for CURRENT TEMPLATE
-*/
+/* Binura Salindra — progressive enhancements for the static portfolio.
+   jQuery and the existing EmailJS service remain the contact integration. */
+(function ($) {
+  "use strict";
 
-jQuery(document).ready(function(){
+  function initNavigation() {
+    const menu = document.querySelector(".tokyo_tm_mobile_menu");
+    const toggle = document.querySelector(".hamburger");
+    const mobileViewport = window.matchMedia("(max-width: 760px)");
+    const links = document.querySelectorAll(".transition_link a");
+    const sections = Array.from(
+      document.querySelectorAll("main > .rightpart_in > section"),
+    );
 
-	"use strict";
-	
-	// here all ready functions
-	
-	tokyo_tm_modalbox();
-	tokyo_tm_page_transition();
-	tokyo_tm_trigger_menu();
-	tokyo_tm_service_popup();
-	tokyo_tm_modalbox_news();
-	tokyo_tm_modalbox_portfolio();
-	tokyo_tm_my_progress();
-	tokyo_tm_projects();
-	tokyo_tm_portfolio();
-	tokyo_tm_cursor();
-	tokyo_tm_imgtosvg();
-	tokyo_tm_popup();
-	tokyo_tm_data_images();
-	tokyo_tm_owl_carousel();
-    tokyo_tm_contact_form();
-
-	jQuery(window).load('body', function(){
-		tokyo_tm_my_load();
-	});
-	
-});
-
-// -----------------------------------------------------
-// ---------------   FUNCTIONS    ----------------------
-// -----------------------------------------------------
-(function () {
-    if (typeof emailjs !== "undefined") {
-        emailjs.init("YvKw5a6mHClTIHaRN");
-    }
-})();
-// -----------------------------------------------------
-// --------------------   MODALBOX    ------------------
-// -----------------------------------------------------
-
-function tokyo_tm_modalbox(){
-	"use strict";
-	
-	jQuery('.tokyo_tm_all_wrap').prepend('<div class="tokyo_tm_modalbox"><div class="box_inner"><div class="close"><a href="#"><i class="icon-cancel"></i></a></div><div class="description_wrap"></div></div></div>');
-}
-
-// -----------------------------------------------------
-// -------------   PAGE TRANSITION    ------------------
-// -----------------------------------------------------
-
-function tokyo_tm_page_transition(){
-	
-	"use strict";
-	
-	var section 		= jQuery('.tokyo_tm_section');
-	var allLi 			= jQuery('.transition_link li');
-	var button			= jQuery('.transition_link a');
-	var wrapper 		= jQuery('.tokyo_tm_all_wrap');
-	var enter	 		= wrapper.data('enter');
-	var exit		 	= wrapper.data('exit');
-	
-	button.on('click',function(){
-		var element 	= jQuery(this);
-		var href		= element.attr('href');
-		if(element.parent().hasClass('tokyo_tm_button')){
-			jQuery('.menu .transition_link a[href="'+href+'"]').trigger('click');
-			hashtag();
-			return false;
-		}
-		var sectionID 	= jQuery(href);
-		var parent	 	= element.closest('li');
-			if(!parent.hasClass('active')) {
-				allLi.removeClass('active');
-				wrapper.find(section).removeClass('animated '+enter);
-				if(wrapper.hasClass('opened')) {
-					wrapper.find(section).addClass('animated '+exit);
-				}
-				parent.addClass('active');
-				wrapper.addClass('opened');
-				wrapper.find(sectionID).removeClass('animated '+exit).addClass('animated '+enter);
-				jQuery(section).addClass('hidden');
-				jQuery(sectionID).removeClass('hidden').addClass('active');
-			}
-		return false;
-	});
-}
-
-// -----------------------------------------------------
-// ---------------   TRIGGER MENU    -------------------
-// -----------------------------------------------------
-
-function tokyo_tm_trigger_menu(){
-	
-	"use strict";
-
-	var hamburger 		= jQuery('.tokyo_tm_topbar .trigger .hamburger');
-	var mobileMenu		= jQuery('.tokyo_tm_mobile_menu');
-	var mobileMenuList	= jQuery('.tokyo_tm_mobile_menu ul li a');
-
-	hamburger.on('click',function(){
-		var element 	= jQuery(this);
-
-		if(element.hasClass('is-active')){
-			element.removeClass('is-active');
-			mobileMenu.removeClass('opened');
-		}else{
-			element.addClass('is-active');
-			mobileMenu.addClass('opened');
-		}
-		return false;
-	});
-	
-	mobileMenuList.on('click',function(){
-		jQuery('.tokyo_tm_topbar .trigger .hamburger').removeClass('is-active');
-		mobileMenu.removeClass('opened');
-		return false;
-	});
-}
-
-// -------------------------------------------------
-// -------------  SERVICE POPUP  -------------------
-// -------------------------------------------------
-
-function tokyo_tm_service_popup(){
-	
-	"use strict";
-	
-	var modalBox		= jQuery('.tokyo_tm_modalbox');
-	var button			= jQuery('.tokyo_tm_services .tokyo_tm_full_link');
-	var closePopup		= modalBox.find('.close');
-	
-	button.on('click',function(){
-		var element = jQuery(this);
-		var parent	= element.closest('.tokyo_tm_services .list ul li');
-		var elImage	= parent.find('.popup_service_image').attr('src');
-		var title	= parent.find('.title').text();
-		var content = parent.find('.service_hidden_details').html();
-		modalBox.addClass('opened');
-		modalBox.find('.description_wrap').html(content);
-		modalBox.find('.service_popup_informations').prepend('<div class="image"><img src="img/thumbs/4-2.jpg" alt="" /><div class="main" data-img-url="'+elImage+'"></div></div>');
-		tokyo_tm_data_images();
-		modalBox.find('.service_popup_informations .image').after('<div class="main_title"><h3>'+title+'</h3></div>');
-		return false;
-	});
-	closePopup.on('click',function(){
-		modalBox.removeClass('opened');
-		modalBox.find('.description_wrap').html('');
-		return false;
-	});
-}
-
-// -------------------------------------------------
-// -------------  MODALBOX NEWS  -------------------
-// -------------------------------------------------
-
-function tokyo_tm_modalbox_news(){
-	
-	"use strict";
-	
-	var modalBox	= jQuery('.tokyo_tm_modalbox');
-	var list 		= jQuery('.tokyo_tm_news ul li');
-	var closePopup	= modalBox.find('.close');
-	
-	list.each(function(){
-		var element 	= jQuery(this);
-		var details 	= element.find('.list_inner').html();
-		var buttons 	= element.find('.details .title a,.tokyo_tm_full_link,.tokyo_tm_read_more a');
-		var mainImage	= element.find('.main');
-		var imgData		= mainImage.data('img-url');
-		var title		= element.find('.title');
-		var titleHref	= element.find('.title a').html();
-		buttons.on('click',function(){
-			jQuery('body').addClass('modal');
-			modalBox.addClass('opened');
-			modalBox.find('.description_wrap').html(details);
-			mainImage = modalBox.find('.main');
-			mainImage.css({backgroundImage: 'url('+imgData+')'});
-			title = modalBox.find('.title');
-			title.html(titleHref);
-			tokyo_tm_imgtosvg();
-			return false;
-		});
-	});
-	closePopup.on('click',function(){
-		modalBox.removeClass('opened');
-		modalBox.find('.description_wrap').html('');
-		jQuery('body').removeClass('modal');
-		return false;
-	});
-}
-
-// -------------------------------------------------
-// -------------  MODALBOX PORTFOLIO  --------------
-// -------------------------------------------------
-
-function tokyo_tm_modalbox_portfolio(){
-	
-	"use strict";
-	
-	var modalBox	= jQuery('.tokyo_tm_modalbox');
-	var button		= jQuery('.tokyo_tm_portfolio .popup_info');
-	
-	button.on('click',function(){
-		var element 	= jQuery(this);
-		var parent		= element.closest('li');
-		var image		= parent.find('.abs_image').data('img-url');
-		var details 	= parent.find('.details_all_wrap').html();
-		var title 		= parent.find('.entry').data('title');
-		var category 	= parent.find('.entry').data('category');
-		console.log(image);
-		
-		modalBox.addClass('opened');
-		modalBox.find('.description_wrap').html(details);
-		modalBox.find('.popup_details').prepend('<div class="top_image"><img src="img/thumbs/4-2.jpg" alt="" /><div class="main" data-img-url="'+image+'"></div></div>');
-		modalBox.find('.popup_details .top_image').after('<div class="portfolio_main_title"><h3>'+title+'</h3><span>'+category+'</span><div>');	
-		tokyo_tm_data_images();
-		return false;
-	});
-}
-
-// -------------------------------------------------
-// -----------------    PORTFOLIO    ---------------
-// -------------------------------------------------
-
-function tokyo_tm_projects() {
-	
-	"use strict";
-	
-	jQuery('.tokyo_tm_portfolio_animation_wrap').each(function() {
-		jQuery(this).on('mouseenter', function() {
-			if (jQuery(this).data('title')) {
-				jQuery('.tokyo_tm_portfolio_titles').html(jQuery(this).data('title') + '<span class="work__cat">' + jQuery(this).data('category') + '</span>');
-				jQuery('.tokyo_tm_portfolio_titles').addClass('visible');
-			}
-
-			jQuery(document).on('mousemove', function(e) {
-				jQuery('.tokyo_tm_portfolio_titles').css({
-					left: e.clientX - 10,
-					top: e.clientY + 25
-				});
-			});
-		}).on('mouseleave', function() {
-			jQuery('.tokyo_tm_portfolio_titles').removeClass('visible');
-		});
-	});
-}
-
-// filterable 
-
-function tokyo_tm_portfolio(){
-
-	"use strict";
-
-	if(jQuery().isotope) {
-
-		// Needed variables
-		var list 		 = jQuery('.tokyo_tm_portfolio .portfolio_list');
-		var filter		 = jQuery('.tokyo_tm_portfolio .portfolio_filter ul');
-
-		if(filter.length){
-			// Isotope Filter 
-			filter.find('a').on('click', function(){
-				var selector = jQuery(this).attr('data-filter');
-				list.isotope({ 
-					filter				: selector,
-					animationOptions	: {
-						duration			: 750,
-						easing				: 'linear',
-						queue				: false
-					}
-				});
-				return false;
-			});	
-
-			// Change active element class
-			filter.find('a').on('click', function() {
-				filter.find('a').removeClass('current');
-				jQuery(this).addClass('current');
-				return false;
-			});	
-		}
-	}
-}
-
-// -------------------------------------------------
-// -------------  PROGRESS BAR  --------------------
-// -------------------------------------------------
-
-function tokyo_tm_my_progress(){
-	"use strict";
-	
-	var list = jQuery('.tokyo_progress .progress_inner');
-	list.each(function(){
-		var element = jQuery(this);
-		var bar		= element.find('.bar_in');
-		var number	= element.data('value');
-		bar.css({width:number+'%'});
-	});
-	
-}
-
-// -----------------------------------------------------
-// ---------------   PRELOADER   -----------------------
-// -----------------------------------------------------
-
-function tokyo_tm_preloader(){
-	
-	"use strict";
-	
-	var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ? true : false;
-	var preloader = $('#preloader');
-	
-	if (!isMobile) {
-		setTimeout(function() {
-			preloader.addClass('preloaded');
-		}, 800);
-		setTimeout(function() {
-			preloader.remove();
-		}, 2000);
-
-	} else {
-		preloader.remove();
-	}
-}
-
-// -----------------------------------------------------
-// -----------------   MY LOAD    ----------------------
-// -----------------------------------------------------
-
-function tokyo_tm_my_load(){
-	
-	"use strict";
-	
-	var speed	= 500;
-	setTimeout(function(){tokyo_tm_preloader();},speed);
-}
-
-// -----------------------------------------------------
-// ------------------   CURSOR    ----------------------
-// -----------------------------------------------------
-
-function tokyo_tm_cursor(){
-    "use strict";
-	
-	var myCursor	= jQuery('.mouse-cursor');
-	
-	if(myCursor.length){
-		if ($("body")) {
-        const e = document.querySelector(".cursor-inner"),
-            t = document.querySelector(".cursor-outer");
-        let n, i = 0,
-            o = !1;
-        window.onmousemove = function (s) {
-            o || (t.style.transform = "translate(" + s.clientX + "px, " + s.clientY + "px)"), e.style.transform = "translate(" + s.clientX + "px, " + s.clientY + "px)", n = s.clientY, i = s.clientX
-        }, $("body").on("mouseenter", "a, .cursor-pointer", function () {
-            e.classList.add("cursor-hover"), t.classList.add("cursor-hover")
-        }), $("body").on("mouseleave", "a, .cursor-pointer", function () {
-            $(this).is("a") && $(this).closest(".cursor-pointer").length || (e.classList.remove("cursor-hover"), t.classList.remove("cursor-hover"))
-        }), e.style.visibility = "visible", t.style.visibility = "visible"
-    }
-	}
-};
-
-// -----------------------------------------------------
-// ---------------    IMAGE TO SVG    ------------------
-// -----------------------------------------------------
-
-function tokyo_tm_imgtosvg(){
-	
-	"use strict";
-	
-	jQuery('img.svg').each(function(){
-		
-		var jQueryimg 		= jQuery(this);
-		var imgClass		= jQueryimg.attr('class');
-		var imgURL			= jQueryimg.attr('src');
-
-		jQuery.get(imgURL, function(data) {
-			// Get the SVG tag, ignore the rest
-			var jQuerysvg = jQuery(data).find('svg');
-
-			// Add replaced image's classes to the new SVG
-			if(typeof imgClass !== 'undefined') {
-				jQuerysvg = jQuerysvg.attr('class', imgClass+' replaced-svg');
-			}
-
-			// Remove any invalid XML tags as per http://validator.w3.org
-			jQuerysvg = jQuerysvg.removeAttr('xmlns:a');
-
-			// Replace image with new SVG
-			jQueryimg.replaceWith(jQuerysvg);
-
-		}, 'xml');
-
-	});
-}
-
-// -----------------------------------------------------
-// --------------------   POPUP    ---------------------
-// -----------------------------------------------------
-
-function tokyo_tm_popup(){
-	
-	"use strict";
-
-	jQuery('.gallery_zoom').each(function() { // the containers for all your galleries
-		jQuery(this).magnificPopup({
-			delegate: 'a.zoom', // the selector for gallery item
-			type: 'image',
-			gallery: {
-			  enabled:true
-			},
-			removalDelay: 300,
-			mainClass: 'mfp-fade'
-		});
-
-	});
-	jQuery('.popup-youtube, .popup-vimeo').each(function() { // the containers for all your galleries
-		jQuery(this).magnificPopup({
-			disableOn: 700,
-			type: 'iframe',
-			mainClass: 'mfp-fade',
-			removalDelay: 160,
-			preloader: false,
-			fixedContentPos: false
-		});
-	});
-	
-	jQuery('.soundcloude_link').magnificPopup({
-	  type : 'image',
-	   gallery: {
-		   enabled: true, 
-	   },
-	});
-}
-
-// -----------------------------------------------------
-// ---------------   DATA IMAGES    --------------------
-// -----------------------------------------------------
-
-function tokyo_tm_data_images(){
-	
-	"use strict";
-	
-	var data			= jQuery('*[data-img-url]');
-	
-	data.each(function(){
-		var element			= jQuery(this);
-		var url				= element.data('img-url');
-		element.css({backgroundImage: 'url('+url+')'});
-	});
-}
-
-// -----------------------------------------------------
-// ----------------    OWL CAROUSEL    -----------------
-// -----------------------------------------------------
-
-function tokyo_tm_owl_carousel(){
-
-	"use strict";
-	
-	var carousel			= jQuery('.tokyo_tm_testimonials .owl-carousel');
-	
-	carousel.owlCarousel({
-		loop: true,
-		items: 2,
-		lazyLoad: false,
-		margin: 30,
-		autoplay: true,
-		autoplayTimeout: 7000,
-		dots: false,
-		nav: false,
-		navSpeed: false,
-		responsive : {
-			0 : {
-				items: 1
-			},
-			768 : {
-				items: 2
-			}
-		}
-	});
-}
-
-// -----------------------------------------------------
-// ----------------    Contact Form    -----------------
-// -----------------------------------------------------
-function tokyo_tm_contact_form() {
-
-    var form = jQuery("#contact_form");
-    var returnMessage = jQuery(".returnmessage");
-
-    if (!form.length || !returnMessage.length) {
-        return; // safety check
+    function closeMenu(restoreFocus) {
+      menu.classList.remove("opened");
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.setAttribute("aria-label", "Open menu");
+      if (restoreFocus) toggle.focus();
     }
 
-    form.on("submit", function(e) {
-        e.preventDefault();
-
-        var name = jQuery("#name").val().trim();
-        var email = jQuery("#email").val().trim();
-        var message = jQuery("#message").val().trim();
-
-        if (!name || !email || !message) {
-            jQuery(".empty_notice").fadeIn();
-            return;
-        }
-
-        // Sending state
-        returnMessage
-            .html("⏳ Sending message...")
-            .addClass("sending")
-            .fadeIn();
-
-        emailjs.send("service_a3nycjj", "template_qxpw70p", {
-            name: name,
-            email: email,
-            message: message
-        })
-            .then(function() {
-                returnMessage
-                    .html(returnMessage.data("success"))
-                    .removeClass("sending");
-
-                form[0].reset();
-            })
-            .catch(function() {
-                returnMessage
-                    .html("❌ Failed to send message. Please try again.")
-                    .removeClass("sending");
-            });
+    toggle.addEventListener("click", function () {
+      const open = toggle.getAttribute("aria-expanded") !== "true";
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      menu.classList.toggle("opened", open);
     });
-}
+    menu.addEventListener("click", function (event) {
+      const link = event.target.closest("a");
+      if (!link) return;
+      closeMenu(false);
+      // Move focus with the destination, rather than leaving it in a hidden menu.
+      const target = document.querySelector(link.getAttribute("href"));
+      if (target) {
+        target.setAttribute("tabindex", "-1");
+        target.focus({ preventScroll: true });
+      }
+    });
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && menu.classList.contains("opened"))
+        closeMenu(true);
+    });
+    document.addEventListener("click", function (event) {
+      if (!menu.contains(event.target) && !toggle.contains(event.target))
+        closeMenu(false);
+    });
+    document.addEventListener("focusin", function (event) {
+      if (!menu.contains(event.target) && !toggle.contains(event.target))
+        closeMenu(false);
+    });
+    mobileViewport.addEventListener("change", function () {
+      closeMenu(false);
+    });
+
+    let scheduled = false;
+    function updateCurrentSection() {
+      let current = sections[0];
+      const offset = mobileViewport.matches ? 120 : 160;
+      sections.forEach(function (section) {
+        if (section.getBoundingClientRect().top <= offset) current = section;
+      });
+      if (current)
+        links.forEach(function (link) {
+          const active = link.hash === "#" + current.id;
+          link.parentElement.classList.toggle("active", active);
+          if (active) link.setAttribute("aria-current", "location");
+          else link.removeAttribute("aria-current");
+        });
+      scheduled = false;
+    }
+    window.addEventListener(
+      "scroll",
+      function () {
+        if (!scheduled) {
+          scheduled = true;
+          window.requestAnimationFrame(updateCurrentSection);
+        }
+      },
+      { passive: true },
+    );
+    window.addEventListener("resize", updateCurrentSection);
+    updateCurrentSection();
+  }
+
+  function initArticle() {
+    const content = document.querySelector("#article-content");
+    // Without dialog support or JavaScript the full article remains in the page.
+    if (!content || typeof HTMLDialogElement === "undefined") return;
+
+    const card = content.closest(".list_inner");
+    const dialog = document.createElement("dialog");
+    dialog.className = "article-dialog";
+    dialog.setAttribute("aria-labelledby", "article-dialog-title");
+    dialog.innerHTML =
+      '<div class="dialog-toolbar"><button type="button" class="dialog-close" aria-label="Close article" autofocus><span aria-hidden="true">×</span></button></div>';
+    document.body.appendChild(dialog);
+    const closeButton = dialog.querySelector(".dialog-close");
+    let opener = null;
+    let article = null;
+    content.hidden = true;
+
+    function openArticle(trigger) {
+      if (dialog.open) return;
+      opener = trigger;
+      if (!article) {
+        article = card.cloneNode(true);
+        article.querySelectorAll("[id]").forEach(function (element) {
+          element.removeAttribute("id");
+        });
+        article.querySelector(".main_content").hidden = false;
+        const title = article.querySelector(".title");
+        title.textContent = title.textContent;
+        title.id = "article-dialog-title";
+        article
+          .querySelectorAll(".tokyo_tm_full_link, .tokyo_tm_read_more")
+          .forEach(function (element) {
+            element.remove();
+          });
+        dialog.appendChild(article);
+      }
+      document.body.classList.add("modal");
+      dialog.showModal();
+      dialog.scrollTop = 0;
+    }
+
+    card
+      .querySelectorAll('a[href="#article-content"]')
+      .forEach(function (link) {
+        link.setAttribute("aria-haspopup", "dialog");
+        link.addEventListener("click", function (event) {
+          event.preventDefault();
+          openArticle(link);
+        });
+      });
+    closeButton.addEventListener("click", function () {
+      dialog.close();
+    });
+    dialog.addEventListener("click", function (event) {
+      if (event.target.closest('a[href="#about"]')) dialog.close();
+      if (event.target !== dialog) return;
+      const bounds = dialog.getBoundingClientRect();
+      if (
+        event.clientX < bounds.left ||
+        event.clientX > bounds.right ||
+        event.clientY < bounds.top ||
+        event.clientY > bounds.bottom
+      )
+        dialog.close();
+    });
+    dialog.addEventListener("close", function () {
+      document.body.classList.remove("modal");
+      if (location.hash === "#article-content") {
+        history.replaceState(null, "", "#news");
+        document.querySelector("#news").scrollIntoView();
+      }
+      if (opener) opener.focus({ preventScroll: true });
+    });
+    function openArticleFromHash() {
+      if (location.hash === "#article-content")
+        openArticle(card.querySelector(".tokyo_tm_read_more a"));
+    }
+    window.addEventListener("hashchange", openArticleFromHash);
+    openArticleFromHash();
+  }
+
+  function initContactForm() {
+    const form = document.querySelector("#contact_form");
+    if (!form) return;
+    const status = form.querySelector(".returnmessage");
+    const notice = form.querySelector(".empty_notice");
+    const submit = form.querySelector('button[type="submit"]');
+    let sending = false;
+
+    $(form).on("submit", async function (event) {
+      event.preventDefault();
+      if (sending) return;
+      const values = {
+        name: form.elements.name.value.trim(),
+        email: form.elements.email.value.trim(),
+        message: form.elements.message.value.trim(),
+      };
+      notice.hidden = true;
+      status.classList.remove("error");
+      if (!values.name || !values.email || !values.message) {
+        notice.hidden = false;
+        status.textContent = "";
+        status.hidden = true;
+        const missing = Object.keys(values).find(function (key) {
+          return !values[key];
+        });
+        form.elements[missing].focus();
+        return;
+      }
+      if (!form.reportValidity()) return;
+
+      sending = true;
+      submit.disabled = true;
+      form.setAttribute("aria-busy", "true");
+      status.classList.add("sending");
+      status.textContent = "⏳ Sending message...";
+      status.hidden = false;
+      try {
+        if (typeof window.emailjs === "undefined")
+          throw new Error("Email service unavailable");
+        window.emailjs.init("YvKw5a6mHClTIHaRN");
+        await window.emailjs.send(
+          "service_a3nycjj",
+          "template_qxpw70p",
+          values,
+        );
+        status.textContent = status.dataset.success;
+        form.reset();
+      } catch (_error) {
+        status.textContent = "❌ Failed to send message. Please try again.";
+        status.classList.add("error");
+      } finally {
+        sending = false;
+        submit.disabled = false;
+        form.removeAttribute("aria-busy");
+        status.classList.remove("sending");
+      }
+    });
+  }
+
+  function initMotion() {
+    // Every enhancement is optional: content stays visible if an API is absent.
+    if (!window.IntersectionObserver || !Element.prototype.animate) return;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const precisePointer = window.matchMedia(
+      "(hover: hover) and (pointer: fine) and (min-width: 761px)",
+    );
+    const avatar = document.querySelector(".avatar");
+    const portrait = avatar.querySelector(".portrait");
+    const groups = [
+      [".tokyo_tm_title", 0, "left"],
+      [".about-intro > *", 90, "split"],
+      [
+        ".tokyo_tm_short_info > *, .tokyo_tm_about > .tokyo_tm_button",
+        65,
+        "up",
+      ],
+      [
+        ".tokyo_tm_progressbox .in > *, .tokyo_tm_skillbox .in > *",
+        90,
+        "split",
+      ],
+      [".tokyo_tm_resumebox .tokyo_section_title", 60, "left"],
+      [".tokyo_tm_resume_list li", 65, "up"],
+      [".tokyo_tm_services .list > ul > li", 80, "up"],
+      [".tokyo_tm_news > ul > li", 0, "up"],
+      [".contact-layout > *", 90, "split"],
+    ];
+    const targets = new Map();
+    groups.forEach(function ([selector, stagger, direction]) {
+      document.querySelectorAll(selector).forEach(function (element, index) {
+        const distance = 14;
+        targets.set(element, {
+          delay: Math.min(index % 3, 2) * stagger,
+          x:
+            direction === "left"
+              ? -distance
+              : direction === "split"
+                ? index % 2
+                  ? distance
+                  : -distance
+                : 0,
+          y: direction === "up" ? 18 : 6,
+        });
+      });
+    });
+    const revealed = new WeakSet();
+    const animations = new Map();
+    const depthTargets = new Map([
+      [avatar, ["--portrait-parallax", 12]],
+      [document.querySelector(".top_author_image"), ["--image-parallax", 7]],
+      [document.querySelector(".tokyo_tm_skillbox"), ["--rings-parallax", 18]],
+    ]);
+    const visibleDepth = new Set();
+    let revealObserver;
+    let depthObserver;
+    let frame = 0;
+    let pointer = null;
+
+    function finishReveal(element) {
+      const animation = animations.get(element);
+      if (animation) animation.cancel();
+      animations.delete(element);
+    }
+
+    function reveal(element, settings) {
+      if (reducedMotion.matches || document.hidden) return;
+      if (revealed.has(element)) return;
+      revealed.add(element);
+      revealObserver.unobserve(element);
+      // Never fade a control someone is using or a direct anchor destination.
+      const section = element.closest("section");
+      if (
+        element.contains(document.activeElement) ||
+        (section && location.hash === "#" + section.id)
+      )
+        return;
+      const animation = element.animate(
+        [
+          {
+            opacity: 0,
+            transform: `translate3d(${settings.x}px, ${settings.y}px, 0)`,
+          },
+          { opacity: 1, transform: "translate3d(0, 0, 0)" },
+        ],
+        {
+          duration: precisePointer.matches ? 660 : 480,
+          delay: settings.delay,
+          easing: "cubic-bezier(.16, 1, .3, 1)",
+          fill: "backwards",
+        },
+      );
+      animations.set(element, animation);
+      animation.onfinish = function () {
+        finishReveal(element);
+      };
+    }
+
+    function resetPointer() {
+      pointer = null;
+      portrait.style.removeProperty("--portrait-tilt-x");
+      portrait.style.removeProperty("--portrait-tilt-y");
+      avatar.style.removeProperty("--portrait-shift-x");
+      avatar.style.removeProperty("--portrait-shift-y");
+      avatar.style.removeProperty("--circuit-shift-x");
+      avatar.style.removeProperty("--circuit-shift-y");
+      avatar.style.removeProperty("--glow-shift-x");
+      avatar.style.removeProperty("--glow-shift-y");
+      avatar.classList.remove("portrait-interacting");
+    }
+
+    function renderDepth() {
+      frame = 0;
+      if (
+        reducedMotion.matches ||
+        document.hidden ||
+        document.body.classList.contains("modal")
+      )
+        return;
+      // Batch layout reads before writes. No idle requestAnimationFrame loop.
+      const updates = [];
+      if (precisePointer.matches)
+        visibleDepth.forEach(function (element) {
+          const bounds = element.getBoundingClientRect();
+          const [property, distance] = depthTargets.get(element);
+          const progress = Math.max(
+            -1,
+            Math.min(
+              1,
+              (window.innerHeight / 2 - bounds.top - bounds.height / 2) /
+                window.innerHeight,
+            ),
+          );
+          updates.push([
+            element,
+            property,
+            (progress * distance).toFixed(2) + "px",
+          ]);
+        });
+      if (pointer && precisePointer.matches && visibleDepth.has(avatar)) {
+        const bounds = avatar.getBoundingClientRect();
+        const x = Math.max(
+          -0.5,
+          Math.min(0.5, (pointer.x - bounds.left) / bounds.width - 0.5),
+        );
+        const y = Math.max(
+          -0.5,
+          Math.min(0.5, (pointer.y - bounds.top) / bounds.height - 0.5),
+        );
+        updates.push([
+          portrait,
+          "--portrait-tilt-x",
+          (-y * 4).toFixed(2) + "deg",
+        ]);
+        updates.push([
+          portrait,
+          "--portrait-tilt-y",
+          (x * 4).toFixed(2) + "deg",
+        ]);
+        updates.push([avatar, "--portrait-shift-x", (x * 4).toFixed(2) + "px"]);
+        updates.push([avatar, "--portrait-shift-y", (y * 4).toFixed(2) + "px"]);
+        updates.push([avatar, "--circuit-shift-x", (-x * 7).toFixed(2) + "px"]);
+        updates.push([avatar, "--circuit-shift-y", (-y * 7).toFixed(2) + "px"]);
+        updates.push([avatar, "--glow-shift-x", (x * 6).toFixed(2) + "px"]);
+        updates.push([avatar, "--glow-shift-y", (y * 6).toFixed(2) + "px"]);
+      }
+      updates.forEach(function ([element, property, value]) {
+        element.style.setProperty(property, value);
+      });
+    }
+
+    function scheduleDepth() {
+      if (
+        !frame &&
+        !reducedMotion.matches &&
+        !document.hidden &&
+        precisePointer.matches &&
+        visibleDepth.size
+      ) {
+        frame = window.requestAnimationFrame(renderDepth);
+      }
+    }
+
+    function syncMotion() {
+      if (revealObserver) revealObserver.disconnect();
+      if (depthObserver) depthObserver.disconnect();
+      window.cancelAnimationFrame(frame);
+      frame = 0;
+      animations.forEach(function (_animation, element) {
+        finishReveal(element);
+      });
+      visibleDepth.clear();
+      resetPointer();
+      avatar.classList.remove("portrait-in-view");
+      depthTargets.forEach(function ([property], element) {
+        element.style.removeProperty(property);
+      });
+      if (reducedMotion.matches) return;
+
+      revealObserver = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting)
+              reveal(entry.target, targets.get(entry.target));
+          });
+        },
+        { threshold: 0, rootMargin: "0px 0px -32px 0px" },
+      );
+      targets.forEach(function (_delay, element) {
+        if (!revealed.has(element)) revealObserver.observe(element);
+      });
+      depthObserver = new IntersectionObserver(function (entries) {
+        if (reducedMotion.matches) return;
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) visibleDepth.add(entry.target);
+          else visibleDepth.delete(entry.target);
+          if (entry.target === avatar) {
+            avatar.classList.toggle("portrait-in-view", entry.isIntersecting);
+            if (!entry.isIntersecting) resetPointer();
+          }
+        });
+        scheduleDepth();
+      });
+      depthTargets.forEach(function (_settings, element) {
+        depthObserver.observe(element);
+      });
+    }
+
+    avatar.addEventListener(
+      "pointermove",
+      function (event) {
+        if (
+          !precisePointer.matches ||
+          reducedMotion.matches ||
+          event.pointerType === "touch"
+        )
+          return;
+        pointer = { x: event.clientX, y: event.clientY };
+        avatar.classList.add("portrait-interacting");
+        scheduleDepth();
+      },
+      { passive: true },
+    );
+    avatar.addEventListener("pointerleave", resetPointer);
+    avatar.addEventListener("pointercancel", resetPointer);
+    window.addEventListener("scroll", scheduleDepth, { passive: true });
+    window.addEventListener("resize", scheduleDepth);
+    window.addEventListener("blur", resetPointer);
+    reducedMotion.addEventListener("change", syncMotion);
+    precisePointer.addEventListener("change", syncMotion);
+    document.addEventListener("focusin", function (event) {
+      targets.forEach(function (_delay, element) {
+        if (element.contains(event.target)) {
+          revealed.add(element);
+          if (revealObserver) revealObserver.unobserve(element);
+          finishReveal(element);
+        }
+      });
+    });
+    document.addEventListener("visibilitychange", function () {
+      document.body.classList.toggle("motion-paused", document.hidden);
+      if (document.hidden) {
+        window.cancelAnimationFrame(frame);
+        frame = 0;
+        resetPointer();
+        animations.forEach(function (_animation, element) {
+          finishReveal(element);
+        });
+      } else scheduleDepth();
+    });
+    window.addEventListener("beforeprint", function () {
+      animations.forEach(function (_animation, element) {
+        finishReveal(element);
+      });
+    });
+    syncMotion();
+    document.body.classList.toggle("motion-paused", document.hidden);
+  }
+
+  $(function () {
+    initNavigation();
+    initArticle();
+    initContactForm();
+    initMotion();
+  });
+})(jQuery);
