@@ -7,7 +7,7 @@
     const menu = document.querySelector(".tokyo_tm_mobile_menu");
     const toggle = document.querySelector(".hamburger");
     const mobileViewport = window.matchMedia("(max-width: 760px)");
-    const links = document.querySelectorAll(".transition_link a");
+    const links = document.querySelectorAll('.transition_link a[href^="#"]');
     const sections = Array.from(
       document.querySelectorAll("main > .rightpart_in > section"),
     );
@@ -29,8 +29,9 @@
       const link = event.target.closest("a");
       if (!link) return;
       closeMenu(false);
+      if (!link.hash) return;
       // Move focus with the destination, rather than leaving it in a hidden menu.
-      const target = document.querySelector(link.getAttribute("href"));
+      const target = document.querySelector(link.hash);
       if (target) {
         target.setAttribute("tabindex", "-1");
         target.focus({ preventScroll: true });

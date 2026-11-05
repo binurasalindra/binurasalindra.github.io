@@ -249,12 +249,16 @@ function pass(name) {
     "none",
   );
   pass("Reduced motion disables smooth scrolling and entrance animation");
+  assert.equal(
+    await page.locator('a.header-cv-link[download]').count(),
+    2,
+  );
   const downloadEvent = page.waitForEvent("download");
-  await page.getByRole("link", { name: "Download CV" }).click();
+  await page.locator(".menu .header-cv-link").click();
   const download = await downloadEvent;
-  assert.equal(download.suggestedFilename(), "binura_salindra _cv.pdf");
+  assert.equal(download.suggestedFilename(), "Binura_Salindra_CV_2026.pdf");
   assert.equal(await download.failure(), null);
-  pass("Original CV download works");
+  pass("Header and mobile CV links are present; header CV download works");
 
   for (const selector of [
     "#home",

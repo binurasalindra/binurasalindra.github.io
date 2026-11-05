@@ -250,18 +250,32 @@ strong {
   background: #e7ebdf;
   color: var(--green-dark);
 }
-.menu li:last-child {
+.menu .contact-link {
   margin-left: 12px;
 }
-.menu li:last-child a {
+.menu .contact-link a {
   border: 1px solid var(--ink);
   padding-inline: 24px;
 }
-.menu li:last-child a::after {
+.menu .contact-link a::after {
   content: "↗";
   margin-left: 16px;
 }
-.menu li:last-child a:hover {
+.menu .contact-link a:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+.menu .header-cv-link {
+  padding-inline: 22px;
+  background: var(--green-dark);
+  color: var(--paper);
+}
+.menu .header-cv-link::after {
+  content: "↓";
+  margin-left: 10px;
+}
+.menu .header-cv-link:hover,
+.menu .header-cv-link:focus-visible {
   background: var(--ink);
   color: var(--paper);
 }
@@ -1390,6 +1404,22 @@ progress::-moz-progress-bar {
   .leftpart_inner {
     gap: 16px;
   }
+  .menu ul {
+    gap: 2px;
+  }
+  .menu a {
+    padding-inline: 10px;
+  }
+  .menu .contact-link {
+    margin-left: 4px;
+  }
+  .menu .contact-link a,
+  .menu .header-cv-link {
+    padding-inline: 14px;
+  }
+  .menu .contact-link a::after {
+    margin-left: 8px;
+  }
   .home_content {
     gap: 40px;
   }
@@ -1527,6 +1557,21 @@ progress::-moz-progress-bar {
   .menu_list a:hover {
     background: #e7ebdf;
     color: var(--green-dark);
+  }
+  .menu_list .header-cv-link {
+    margin-top: 8px;
+    background: var(--green-dark);
+    color: var(--paper);
+    text-align: center;
+  }
+  .menu_list .header-cv-link::after {
+    content: "↓";
+    margin-left: 10px;
+  }
+  .menu_list .header-cv-link:hover,
+  .menu_list .header-cv-link:focus-visible {
+    background: var(--ink);
+    color: var(--paper);
   }
   .tokyo_tm_home {
     padding-block: 46px 60px;
